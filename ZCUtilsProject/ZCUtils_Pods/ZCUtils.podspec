@@ -32,8 +32,16 @@ Pod::Spec.new do |s|
     'ZCUtils' => ['ZCUtils/Assets/*']
   }
 
-  s.subspec 'Views' do |views|
-      views.source_files = 'ZCUtils/Classes/Views/*.{h,m,swift}'
+  s.subspec 'Category' do |category|
+    category.source_files = 'ZCUtils/Classes/Category/*.{h,m,swift}'
+  end
+  
+  s.subspec 'Inherit' do |inherit|
+    inherit.source_files = 'ZCUtils/Classes/Inherit/*.{h,m,swift}'
+  end
+  
+  s.subspec 'Common' do |common|
+    common.source_files = 'ZCUtils/Classes/Common/*.{h,m,swift}'
   end
   
   s.public_header_files = 'ZCUtils/Classes/*.h'
