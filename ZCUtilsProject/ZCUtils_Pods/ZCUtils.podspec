@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZCUtils'
-  s.version          = '0.0.1'
+  s.version          = '1.0.0'
   s.summary          = 'ZCUtils Code'
 
   s.description      = <<-DESC
@@ -23,7 +23,7 @@ Pod::Spec.new do |s|
   # s.exclude_files = 'ZCUtils/Classes/Exclude'
   # s.pod_target_xcconfig = { 'VALID_ARCHS' => 'x86_64 armv7 arm64' }
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES' }
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '12.0'
   s.swift_version = '5.0'
   s.static_framework = true
 

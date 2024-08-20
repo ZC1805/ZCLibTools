@@ -9,4 +9,13 @@
 
 @implementation ZCGlobal
 
+- (instancetype)init {
+    if (self = [super init]) {
+        CGFloat x = 10;
+        id a = ^(){
+            
+        };
+    } return self;
+}
+
 @end

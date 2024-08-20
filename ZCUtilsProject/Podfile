@@ -1,9 +1,12 @@
-platform :ios, '11.0'
+platform :ios, '12.0'
+use_modular_headers!
 use_frameworks! :linkage => :static
-
+#inhibit_all_warnings!
 
 source 'https://github.com/CocoaPods/Specs.git'
 source 'git@gitlab.chuanyinet.com:basic-platform/iOS/palm-specs.git'
+
+dev_pods = ['ZCUtils']
 
 
 def base_comps
@@ -15,16 +18,16 @@ def base_comps
 end
 
 
-def moudle_comps
-  pod 'ZCUtils', :path => 'ZCUtils_Pods/'
+def moudle_comps(dev_pods)
+  dev_pods.each do |item|
+    pod item, :path => item + '_Pods/'
+  end
 end
 
 
 target 'ZCUtilsProject' do
-  use_modular_headers!
-  
   base_comps
-  moudle_comps
+  moudle_comps(dev_pods)
 end
 
 
@@ -36,22 +39,31 @@ post_install do |installer|
   .each do |pod_name, target_installation_result|
     target_installation_result.native_target.build_configurations.each do |config|
       config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= '$(inherited) '
-      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << '"_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION" '
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << '\'_LIBCPP_ENABLE_CXX17_REMOVED_UNARY_BINARY_FUNCTION\' '
     end
   end
   
   installer.pods_project.build_configurations.each do |config|
-    config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+    config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
   end
   
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '11.0'
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
       config.build_settings['ARCHS[sdk=iphonesimulator*]'] = 'x86_64'
       config.build_settings['VALID_ARCHS[sdk=iphonesimulator*]'] = 'x86_64'
-      config.build_settings["EXCLUDED_ARCHS[sdk=iphonesimulator*]"] = "arm64"
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+      
+      if !dev_pods.include?(target.name)
+        config.build_settings['OTHER_CFLAGS'] = '$(inherited) -w'
+      end
+      
       #config.build_settings['DEBUG_INFORMATION_FORMAT'] = 'dwarf-with-dsym'
       #config.build_settings['STRIP_STYLE'] = 'all'
+      
+      #if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 12.0
+      #  config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+      #end
     end
   end
 end
