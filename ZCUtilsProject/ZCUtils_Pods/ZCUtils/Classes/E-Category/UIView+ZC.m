@@ -1,11 +1,11 @@
 //
-//  UIView+ZCExpend.m
+//  UIView+ZC.m
 //  ZCUtils-ZCUtils
 //
 //  Created by zjy on 2024/6/18.
 //
 
-#import "UIView+ZCExpend.h"
+#import "UIView+ZC.h"
 
 @interface UIView ()
 

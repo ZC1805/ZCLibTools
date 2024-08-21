@@ -31,22 +31,36 @@ Pod::Spec.new do |s|
   s.resource_bundles = {
     'ZCUtils' => ['ZCUtils/Assets/*']
   }
-
-  s.subspec 'Category' do |category|
-    category.source_files = 'ZCUtils/Classes/Category/*.{h,m,swift}'
+  
+  # ------------------------------------------------------------ #
+  s.subspec 'A-Tool' do |tool|
+    tool.source_files = 'ZCUtils/Classes/A-Tool/*.{h,m,swift}'
   end
   
-  s.subspec 'Common' do |common|
-    common.source_files = 'ZCUtils/Classes/Common/*.{h,m,swift}'
+  s.subspec 'B-Core' do |core|
+    core.source_files = 'ZCUtils/Classes/B-Core/*.{h,m,swift}'
   end
   
-  s.subspec 'Core' do |core|
-    core.source_files = 'ZCUtils/Classes/Core/*.{h,m,swift}'
+  s.subspec 'C-Inherit' do |inherit|
+    inherit.source_files = 'ZCUtils/Classes/C-Inherit/*.{h,m,swift}'
   end
   
-  s.subspec 'Inherit' do |inherit|
-    inherit.source_files = 'ZCUtils/Classes/Inherit/*.{h,m,swift}'
+  s.subspec 'D-Swizzle' do |swizzle|
+    swizzle.source_files = 'ZCUtils/Classes/D-Swizzle/*.{h,m,swift}'
   end
+  
+  s.subspec 'E-Category' do |category|
+    category.source_files = 'ZCUtils/Classes/E-Category/*.{h,m,swift}'
+  end
+  
+  s.subspec 'F-Common' do |common|
+    common.source_files = 'ZCUtils/Classes/F-Common/*.{h,m,swift}'
+  end
+  
+  s.subspec 'G-Component' do |component|
+    component.source_files = 'ZCUtils/Classes/G-Component/*.{h,m,swift}'
+  end
+  # ------------------------------------------------------------ #
   
   s.public_header_files = 'ZCUtils/Classes/*.h'
   
