@@ -18,13 +18,13 @@ typedef NS_ENUM(NSInteger, ZCEnumToastPosition) {
 
 @interface UIView (ZCToast)  /**< 页面toast显示分类 */
 
-- (void)makeToast:(NSString *)message;  /**< 显示文字内容，默认居中持续显示2秒 */
+- (void)makeToast:(NSString *)message;  /**< 显示文字内容，默认居中持续显示2+秒 */
 
 - (void)makeToast:(NSString *)message duration:(NSTimeInterval)interval position:(ZCEnumToastPosition)position;
 
 - (void)makeToast:(nullable NSString *)message duration:(NSTimeInterval)interval position:(ZCEnumToastPosition)position title:(nullable NSString *)title image:(nullable UIImage *)image;
 
-- (void)showToast:(UIView *)toast;  /**< 显示图片内容，默认居中持续显示2秒 */
+- (void)showToast:(UIView *)toast;  /**< 显示图片内容，默认居中持续显示3秒 */
 
 - (void)showToast:(UIView *)toast duration:(NSTimeInterval)interval position:(ZCEnumToastPosition)position;
 

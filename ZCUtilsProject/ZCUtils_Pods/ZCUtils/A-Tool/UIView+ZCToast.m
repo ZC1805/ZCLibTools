@@ -15,7 +15,7 @@
 
 static const CGFloat ZCToastVerticalPadding = 8.0;
 static const CGFloat ZCToastHorizontalPadding = 12.0;
-static const NSTimeInterval ZCToastDefaultDuration = 2.0;
+static const NSTimeInterval ZCToastDefaultDuration = 3.0;
 static const NSString *ZCToastTapActionKey = @"ZCToastTapActionKey";
 
 @implementation UIView (ZCToast)

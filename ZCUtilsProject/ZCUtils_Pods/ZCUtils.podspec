@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'ZCUtils'
-  s.version          = '1.0.0'
+  s.version          = '1.0.1'
   s.summary          = 'Code'
 
   s.description      = <<-DESC
