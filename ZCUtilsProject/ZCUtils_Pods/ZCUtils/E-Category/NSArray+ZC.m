@@ -186,17 +186,6 @@
     return YES;
 }
 
-/**< 错误时候默认返回 nil*/
-- (ZCJsonValue)jsonValueForIndex:(NSInteger)index {
-    if ([self indexIsInvalidIndex:index]) return nil;
-    id obj = [self objectAtIndex:index];
-    if (![ZCGlobal isJsonValue:obj]) {
-        NSAssert(0, @"ZCKit: parse json value is not json value");
-        return nil;
-    }
-    return obj;
-}
-
 /**< 错误时候默认返回 @[] */
 - (NSArray *)arrayValueForIndex:(NSInteger)index {
     if ([self indexIsInvalidIndex:index]) return [NSArray array];
@@ -509,12 +498,9 @@
     [self injectValue:[NSNumber numberWithFloat:value]];
 }
 
+//TODO: 下面两个方法修改 & 公开
 /**< 当value为nil、@""、@"null"时不会注入数组 */
-- (void)injectValue:(ZCJsonValue)value {
-    if (![ZCGlobal isJsonValue:value]) {
-        NSAssert(0, @"ZCKit: array inject value is not json value");
-        return;
-    }
+- (void)injectValue:(nullable id)value {
     if (value == nil || value == NULL) {
         if (ZCKitBridge.isPrintLog) kZLog(@"ZCKit: array inject value obj is nil");
     } else if ([value isKindOfClass:NSString.class]) {
@@ -529,11 +515,7 @@
 }
 
 /**< 当value为nil、@""、@"null"时不会注入数组 */
-- (void)injectValue:(ZCJsonValue)value forIndex:(NSUInteger)index {
-    if (![ZCGlobal isJsonValue:value]) {
-        NSAssert(0, @"ZCKit: array inject value is not json value");
-        return;
-    }
+- (void)injectValue:(nullable id)value forIndex:(NSUInteger)index {
     if (index < 0 || index > self.count) {
         NSAssert(0, @"ZCKit: array inject value index is invalid");
         return;

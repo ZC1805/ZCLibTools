@@ -24,7 +24,6 @@ typedef NS_ENUM(NSUInteger, ZCEnumSubsetUnique) {
     ZCEnumSubsetUniqueNine  = 9,
 };
 
-#pragma mark - ~ ZCSubsetItem ~
 @interface ZCSubsetItem : NSObject  /**< 管理请求状态对象 */
 
 @property (nonatomic, copy, readonly) NSString *requestUrl;  /**< 请求url */
@@ -68,7 +67,7 @@ typedef NS_ENUM(NSUInteger, ZCEnumSubsetUnique) {
 @end
 
 
-#pragma mark - ~ ZCPageItem ~
+
 @interface ZCPageItem : ZCSubsetItem  /**< 管理分页请求状态对象 */
 
 @property (nonatomic, assign, readonly) NSInteger currentPage;  /**< 当前页，默认0 */
@@ -81,7 +80,7 @@ typedef NS_ENUM(NSUInteger, ZCEnumSubsetUnique) {
 @end
 
 
-#pragma mark - ~ ZCPageDateItem ~
+
 @interface ZCPageDateItem : ZCPageItem  /**< 管理按日期分页请求状态对象 */
 
 @property (nonatomic, assign, readonly) NSInteger month;  /**< 当月 */

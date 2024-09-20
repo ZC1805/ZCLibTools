@@ -7,7 +7,7 @@
 //
 
 #import "ZCService.h"
-#import "ZCMacro.h"
+#import "ZCProject.h"
 
 #define kZSuppressLeakWarn(func) \
 do { \
@@ -16,6 +16,8 @@ _Pragma("clang diagnostic ignored \"-Warc-performSelector-leaks\"") \
 func; \
 _Pragma("clang diagnostic pop") \
 } while (0)
+
+
 
 #pragma mark - ~ ZCServiceImpl ~
 @interface ZCService ()
@@ -73,6 +75,7 @@ _Pragma("clang diagnostic pop") \
 @end
 
 
+
 #pragma mark - ~ ZCServiceHandler ~
 @interface ZCServiceHandler ()
 
@@ -96,8 +99,10 @@ _Pragma("clang diagnostic pop") \
     if (self = [super init]) {
         _lock = [[NSLock alloc] init];
         NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        [center addObserver:self selector:@selector(callEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-        [center addObserver:self selector:@selector(callEnterForeground) name:UIApplicationWillEnterForegroundNotification object:nil];
+        [center addObserver:self selector:@selector(callEnterBackground) 
+                       name:UIApplicationDidEnterBackgroundNotification object:nil];
+        [center addObserver:self selector:@selector(callEnterForeground) 
+                       name:UIApplicationWillEnterForegroundNotification object:nil];
     } return self;
 }
 
@@ -151,6 +156,7 @@ _Pragma("clang diagnostic pop") \
 @end
 
 
+
 #pragma mark - ~ ZCService ~
 @implementation ZCService
 
@@ -160,12 +166,12 @@ _Pragma("clang diagnostic pop") \
 }
 
 - (instancetype)initWithClass:(Class)instanceClass {
-    if (self = [super init]) {}
+    if (self = [super init]) { [self archiveJsonCustomRootPath]; } 
     return self;
 }
 
 - (instancetype)init {
-    if (self = [super init]) { NSAssert(NO, @"ZCKit: service not be init"); }
+    if (self = [super init]) { NSAssert(NO, @"ZCKit: service not be init"); } 
     return self;
 }
 
@@ -174,8 +180,82 @@ _Pragma("clang diagnostic pop") \
 }
 
 - (void)start {
-#warning - 数据本地化代码 & 日期选则框 & ZCBoxView & ZCMaskView & ZCScrollView
     
+}
+
+#pragma mark - Private
+- (NSDictionary *)archiveDictionary:(NSDictionary *)data 
+                             forKey:(NSString *)key
+                      lastCacheData:(NSDictionary *)lastCacheData {
+    return [self archiveJsonDictionary:data forKey:key lastCacheData:lastCacheData 
+                       isIgnoreVersion:NO isIgnoreMember:NO];
+}
+
+- (NSDictionary *)archiveIgnoreVersionDic:(NSDictionary *)data 
+                                   forKey:(NSString *)key
+                            lastCacheData:(NSDictionary *)lastCacheData {
+    return [self archiveJsonDictionary:data forKey:key lastCacheData:lastCacheData 
+                       isIgnoreVersion:YES isIgnoreMember:NO];
+}
+
+- (NSDictionary *)archiveIgnoreVersionAndMemberDic:(nullable NSDictionary *)data 
+                                            forKey:(NSString *)key
+                                     lastCacheData:(nullable NSDictionary *)lastCacheData {
+    return [self archiveJsonDictionary:data forKey:key lastCacheData:lastCacheData 
+                       isIgnoreVersion:YES isIgnoreMember:YES];
+}
+
+- (NSDictionary *)archiveJsonDictionary:(NSDictionary *)data 
+                                 forKey:(NSString *)key
+                          lastCacheData:(NSDictionary *)lastCacheData
+                        isIgnoreVersion:(BOOL)isIgnoreVersion isIgnoreMember:(BOOL)isIgnoreMember {
+    NSDictionary *finalDic = nil;
+    if (lastCacheData && [lastCacheData isKindOfClass:NSDictionary.class]) {
+        if (data && [data isKindOfClass:NSDictionary.class]) {
+            if ([data isEqualToDictionary:lastCacheData]) { finalDic = data; }
+        } else {
+            finalDic = lastCacheData;
+        }
+    } if (finalDic) { return finalDic; }
+    NSString *memberId = ZCProject.memberId;
+    if (memberId.length >= 16) {
+        memberId = [NSString stringWithFormat:@"%@X%@", [memberId substringWithRange:NSMakeRange(3, 2)],
+                                                        [memberId substringWithRange:NSMakeRange(11, 3)]];
+    }
+    if (_kJsonDocPath.length && key.length) {
+        NSString *path = [NSString stringWithFormat:@"%@%@_%@_%@_%@", _kJsonDocPath, key.uppercaseString,
+                                      isIgnoreVersion ? @"X" : ZCProject.appBuildId, ZCProject.countryCode,
+                                      isIgnoreMember ? @"Y" : memberId];
+        if (data && [data isKindOfClass:NSDictionary.class]) {
+            NSData *archivedData = [NSKeyedArchiver archivedDataWithRootObject:data 
+                                                         requiringSecureCoding:NO error:nil];
+            if (archivedData) { [archivedData writeToFile:path options:NSDataWritingAtomic error:nil]; }
+            finalDic = data;
+        } else {
+            NSData *archivedData = [NSData dataWithContentsOfFile:path options:0 error:nil];
+            NSSet *classSet = [NSSet setWithArray:@[NSArray.class, NSDictionary.class, NSString.class,
+                                                    NSNumber.class, NSNull.class, NSMutableArray.class,
+                                                    NSMutableDictionary.class, NSMutableString.class,
+                                                    NSDecimalNumber.class, NSValue.class, NSSet.class,
+                                                    NSMutableSet.class]];
+            finalDic = [NSKeyedUnarchiver unarchivedObjectOfClasses:classSet fromData:archivedData error:nil];
+        }
+    }
+    return [finalDic isKindOfClass:NSDictionary.class] ? finalDic : @{};
+}
+
+- (void)archiveJsonCustomRootPath {
+    NSString *kDocPath = nil;
+    NSArray *domains = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    kDocPath = [NSString stringWithFormat:@"%@/%@/", domains.lastObject, NSStringFromClass(self.class)];
+    NSError *error = nil; BOOL isDir = NO;
+    BOOL isExisted = [NSFileManager.defaultManager fileExistsAtPath:kDocPath isDirectory:&isDir];
+    if (!isExisted || !isDir) {
+        [NSFileManager.defaultManager createDirectoryAtPath:kDocPath 
+                                withIntermediateDirectories:YES attributes:nil error:&error];
+    }
+    if (error) { kDocPath = @""; }
+    _kJsonDocPath = kDocPath.copy;
 }
 
 @end

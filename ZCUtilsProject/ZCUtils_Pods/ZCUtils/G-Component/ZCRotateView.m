@@ -51,7 +51,7 @@
                                                                 startAngle:(M_PI * 3 / 2.0)
                                                                   endAngle:(M_PI / 2.0 + M_PI * 5) clockwise:YES];
         _indefiniteAnimatedLayer = [CAShapeLayer layer];
-        _indefiniteAnimatedLayer.contentsScale = [[UIScreen mainScreen] scale];
+        _indefiniteAnimatedLayer.contentsScale = [UIScreen mainScreen].scale;
         _indefiniteAnimatedLayer.frame = rect;
         _indefiniteAnimatedLayer.fillColor = kZCClear.CGColor;
         _indefiniteAnimatedLayer.strokeColor = self.strokeColor.CGColor;
@@ -61,7 +61,7 @@
         _indefiniteAnimatedLayer.path = smoothedPath.CGPath;
         
         CALayer *maskLayer = [CALayer layer];
-        maskLayer.contents = (id)[[ZCGlobal ZCImageName:@"zc_image_angle_mask"] CGImage];
+        maskLayer.contents = (id)[[ZCGlobal imageForName:@"zc_image_angle_mask"] CGImage];
         maskLayer.frame = _indefiniteAnimatedLayer.bounds;
         _indefiniteAnimatedLayer.mask = maskLayer;
         

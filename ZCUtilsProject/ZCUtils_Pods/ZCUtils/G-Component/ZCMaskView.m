@@ -69,11 +69,11 @@
 }
 
 + (float)maskAlpha {
-    return ZCMaskView.sharedView.maskAlpha;
+    return [ZCMaskView sharedView].maskAlpha;
 }
 
 + (void)setMaskAlpha:(float)maskAlpha {
-    ZCMaskView.sharedView.maskAlpha = maskAlpha;
+    [ZCMaskView sharedView].maskAlpha = maskAlpha;
 }
 
 + (void)display:(UIView *)subview didHide:(nullable void (^)(BOOL))didHide {
@@ -87,7 +87,7 @@
 + (void)display:(UIView *)displayView autoHide:(BOOL)autoHide clearMask:(BOOL)clearMask showAnimate:(void (^)(UIView * _Nonnull))showAnimate
     hideAnimate:(void (^)(UIView * _Nonnull))hideAnimate willHide:(nullable void (^)(BOOL))willHide didHide:(nullable void (^)(BOOL))didHide {
     if (!displayView || ![UIApplication sharedApplication].delegate.window) return;
-    ZCMaskView *mask = ZCMaskView.sharedView;
+    ZCMaskView *mask = [ZCMaskView sharedView];
     __weak typeof(mask) weakMask = mask;
     if (mask.isAnimate) {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)((mask.animateTime * 1.5) * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -131,13 +131,13 @@
 }
 
 + (void)autoDismiss:(BOOL)isByAutoHide {
-    ZCMaskView *mask = ZCMaskView.sharedView;
+    ZCMaskView *mask = [ZCMaskView sharedView];
     if (mask.willHideBlock) { mask.willHideBlock(isByAutoHide); }
     [mask hideIsAuto:isByAutoHide finish:nil];
 }
 
 + (NSTimeInterval)animateDuration {
-    ZCMaskView *mask = ZCMaskView.sharedView;
+    ZCMaskView *mask = [ZCMaskView sharedView];
     return mask.animateTime;
 }
 
@@ -253,7 +253,7 @@
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return [[ZCGlobal currentController] preferredStatusBarStyle];
+    return [[ZCGlobal topController] preferredStatusBarStyle];
 }
 
 - (void)viewDidLoad {

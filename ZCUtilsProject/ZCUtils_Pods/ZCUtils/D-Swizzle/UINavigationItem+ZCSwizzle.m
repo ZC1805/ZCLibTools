@@ -28,7 +28,7 @@
 }
 
 - (void)swizzle1_item_setTitle:(NSString *)title {
-    UIViewController *vc = [ZCGlobal currentController];
+    UIViewController *vc = [ZCGlobal topController];
     if ([vc isKindOfClass:NSClassFromString(@"ZCViewController")] && vc.navigationItem == self) {
         ZCLabel *titleLabel = (ZCLabel *)self.titleView;
         if (!titleLabel) {
@@ -53,7 +53,7 @@
 }
 
 - (NSString *)swizzle1_item_title {
-    UIViewController *vc = [ZCGlobal currentController];
+    UIViewController *vc = [ZCGlobal topController];
     if ([vc isKindOfClass:NSClassFromString(@"ZCViewController")] && vc.navigationItem == self) {
         ZCLabel *titleLabel = (ZCLabel *)self.titleView;
         if ([titleLabel isKindOfClass:ZCLabel.class]) {

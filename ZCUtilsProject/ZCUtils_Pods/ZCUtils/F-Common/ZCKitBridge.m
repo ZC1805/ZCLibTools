@@ -9,7 +9,6 @@
 #import "ZCKitBridge.h"
 #import "ZCDateManager.h"
 #import "ZCImageView.h"
-#import "ZCMacro.h"
 
 @interface ZCKitBridge ()
 
@@ -19,7 +18,7 @@
 
 @implementation ZCKitBridge
 
-@dynamic naviBackImage, isPrintLog, isStrToAccurateFloat, classNamePrefix;
+@dynamic naviBackImage, isPrintLog, screenFixMaxWidth, isStrToAccurateFloat, classNamePrefix;
 @dynamic toastTextColor, toastBackGroundColor, realize, naviBarImageOrColor, naviBarTitleColor;
 @dynamic aimLocale, aimTimeZone;
 
@@ -30,6 +29,7 @@ static NSString *_naviBarImageOrColor = nil;
 static NSString *_naviBarTitleColor = nil;
 static NSString *_classNamePrefix = nil;
 static BOOL _isPrintLog = NO;
+static CGFloat _screenFixMaxWidth = 375.0;
 static BOOL _isStrToAccurateFloat = NO;
 static NSLocale *_aimLocale = nil;
 static NSTimeZone *_aimTimeZone = nil;
@@ -59,7 +59,7 @@ static NSTimeZone *_aimTimeZone = nil;
 
 + (UIImage *)naviBackImage {
     if (_naviBackImage == nil) {
-        _naviBackImage = [ZCGlobal ZCImageName:@"zc_image_back_white"];
+        _naviBackImage = [ZCGlobal imageForName:@"zc_image_back_white"];
     }
     return _naviBackImage;
 }
@@ -128,6 +128,14 @@ static NSTimeZone *_aimTimeZone = nil;
 
 + (void)setIsPrintLog:(BOOL)isPrintLog {
     _isPrintLog = isPrintLog;
+}
+
++ (CGFloat)screenFixMaxWidth {
+    return _screenFixMaxWidth;
+}
+
++ (void)setScreenFixMaxWidth:(CGFloat)screenFixMaxWidth {
+    _screenFixMaxWidth = screenFixMaxWidth;
 }
 
 + (BOOL)isStrToAccurateFloat {

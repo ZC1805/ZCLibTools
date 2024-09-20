@@ -30,6 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (class, nonatomic, assign) BOOL isPrintLog;  /**< 是否需要打印日志，默认NO */
 
+@property (class, nonatomic, assign) CGFloat screenFixMaxWidth;  /**< 屏幕最大固定宽度，默认375，可设置0 */
+
 @property (class, nonatomic, assign) BOOL isStrToAccurateFloat;  /**< 是否对数字字符串转成精确字符串，默认NO */
 
 @property (class, nonatomic, copy) NSString *classNamePrefix;  /**< 类名前缀逗号隔开，默认@"" */

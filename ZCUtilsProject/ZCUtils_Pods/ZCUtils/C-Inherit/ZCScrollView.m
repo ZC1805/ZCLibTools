@@ -45,8 +45,7 @@
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     if (gestureRecognizer.view && gestureRecognizer == self.panGestureRecognizer && [gestureRecognizer isKindOfClass:UIPanGestureRecognizer.class]) {
         UIGestureRecognizerState state = gestureRecognizer.state;
-        CGFloat screen_width = UIScreen.mainScreen.bounds.size.width;
-        if ((self.frame.size.width >= screen_width - 60) && (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStatePossible)) {
+        if ((self.frame.size.width >= kZSWid - 60) && (state == UIGestureRecognizerStateBegan || state == UIGestureRecognizerStatePossible)) {
             CGPoint verocity = [(UIPanGestureRecognizer *)gestureRecognizer velocityInView:gestureRecognizer.view];
             CGPoint point = [(UIPanGestureRecognizer *)gestureRecognizer translationInView:gestureRecognizer.view];
             CGPoint location = [gestureRecognizer locationInView:gestureRecognizer.view];

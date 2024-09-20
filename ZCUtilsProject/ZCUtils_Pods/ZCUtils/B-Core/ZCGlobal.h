@@ -9,48 +9,42 @@
 #import <UIKit/UIKit.h>
 #import <Foundation/Foundation.h>
 
+@class ZCViewController;
+
 NS_ASSUME_NONNULL_BEGIN
-
-typedef id ZCJsonValue;  /**< 只可为 nil & NSString & NSNumber & NSArray & NSDictionary 这五种 */
-
-@protocol ZCJsonProtocol <NSObject>
-
-@property (nonatomic, assign) BOOL isJsonValue;
-
-@end
-
 
 @interface ZCGlobal : NSObject  /**< 全局管理类 */
 
 #pragma mark - Misc1
-+ (CGFloat)ratio;  /**< 按375适配的单位比例点 */
++ (CGFloat)ratio;  /**< 适配的单位比例点 */
 
-+ (BOOL)isiPhoneX;  /**< 是否是iPhoneX系列手机 */
++ (CGFloat)roundScreenPointsForUIPoints:(CGFloat)uiPoints;  /**< 适配的单位比例点，四舍五入 */
+
++ (CGFloat)ceilScreenPointsForUIPoints:(CGFloat)uiPoints;  /**< 适配的单位比例点，向上取整 */
+
++ (CGFloat)minScreenPoints;  /**< 最小屏幕点，默认0.01 */
+
++ (CGFloat)obtainDeviceStatusBarHei;  /**< 设备状态栏的固定高度 */
+
++ (BOOL)isiPhoneX;  /**< 是否是刘海屏手机 */
 
 + (BOOL)isLandscape;  /**< 当前手机是否是横屏状态 */
 
-+ (BOOL)isJsonValue:(nullable ZCJsonValue)value;  /**< 是否是ZCJsonValue */
++ (BOOL)isValidStr:(nullable NSString *)str;  /**< 非空长度 & 不只首尾空格和换行 & 非<null> */
 
-+ (BOOL)isEqualToJsonValue:(nullable ZCJsonValue)value1 other:(nullable ZCJsonValue)value2;  /**< 是否相等 */
-
-+ (BOOL)isValidString:(nullable NSString *)str;  /**< 非空长度 & 不只首尾空格和换行 & 非<null> */
-
-+ (BOOL)isValidArray:(nullable NSArray *)array;  /**< 判断对象是否是有效的数组 & count不为零 */
-
-+ (BOOL)isValidDictionary:(nullable NSDictionary *)dictionary;  /**< 判断对象是否是有效的字典 & count不为零 */
-
-+ (BOOL)isExplicitArray:(nullable NSArray *)array elementClass:(Class)elementClass;  /**< 判断数组是否是指定元素类型的数组，空数组时返回YES */
-
-+ (nullable NSString *)resourcePath:(nullable NSString *)bundle name:(NSString *)name ext:(NSString *)ext;  /**< 资源文件路径 */
-
-+ (nullable UIImage *)ZCImageName:(NSString *)imageName;  /**< ZCBundle中图片资源 */
++ (BOOL)isExplicitArr:(nullable NSArray *)array elementClass:(Class)elementClass;  /**< 判断数组是否是指定元素类型的数组，空数组时返回YES */
 
 #pragma mark - Misc2
-+ (nullable UIViewController *)topController:(nullable UIViewController *)rootvc;  /**< 顶控制器，初始rootvc可为nil */
++ (nullable UIImage *)imageForName:(nullable NSString *)name;  /**< 获取图片，优先从mainBundle读取 */
 
-+ (nullable UIViewController *)currentController;  /**< 当前控制器 */
++ (nullable NSString *)resourcePath:(nullable NSString *)name ext:(nullable NSString *)ext;  /**< 获取资源文件路径，优先从mainBundle读取 */
+
+#pragma mark - Misc3
++ (nullable UIViewController *)topController;  /**< 顶控制器 */
 
 + (nullable UIViewController *)rootController;  /**< 根控制器 */
+
++ (nullable ZCViewController *)lastZCController;  /**< 最后的内容控制器 */
 
 @end
 

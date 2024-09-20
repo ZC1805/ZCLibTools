@@ -74,7 +74,7 @@
 - (void)swizzle1_forwardInvocation:(NSInvocation *)anInvocation {
     BOOL isCanForward = NO;
     if ([anInvocation.target isKindOfClass:NSObject.class] && ![anInvocation.target respondsToSelector:anInvocation.selector]) {
-        if ([ZCMethodForwardObject isHasAppointPrefix:NSStringFromClass([((NSObject *)anInvocation.target) class])]) {
+        if ([ZCMethodForwardObject isHasAppointPrefix:NSStringFromClass(((NSObject *)anInvocation.target).class)]) {
             ZCMethodForwardObject *forwardObject = [[ZCMethodForwardObject alloc] init];
             anInvocation.selector = @selector(forwardAllCustomInstanceMethod);
             anInvocation.target = forwardObject;
@@ -100,7 +100,7 @@
     BOOL isCanForward = NO;
     if ([anInvocation.target isSubclassOfClass:NSObject.class] && ![anInvocation.target respondsToSelector:anInvocation.selector]) {
         if ([ZCMethodForwardObject isHasAppointPrefix:NSStringFromClass((Class)anInvocation.target)]) {
-            Class forwardClass = [ZCMethodForwardObject class];
+            Class forwardClass = ZCMethodForwardObject.class;
             anInvocation.selector = @selector(forwardAllCustomClassMethod);
             anInvocation.target = forwardClass;
             [anInvocation invoke];

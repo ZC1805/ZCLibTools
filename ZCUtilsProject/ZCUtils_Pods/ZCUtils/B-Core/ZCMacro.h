@@ -28,12 +28,10 @@
 #define kZArrNonnil(arr)         ((NSArray *)((arr && [arr isKindOfClass:NSArray.class]) ? arr : @[]))              /**< 返回非nil数组类型，用@[]替换nil或非arr类型数据 */
 #define kZStrNonnil(str)         ((NSString *)((str && [str isKindOfClass:NSString.class]) ? str : @""))            /**< 返回非nil字符串型，用@""替换nil或非str类型数据 */
 #define kZDicNonnil(dic)         ((NSDictionary *)((dic && [dic isKindOfClass:NSDictionary.class]) ? dic : @{}))    /**< 返回非nil字典类型，用@{}替换nil或非dic类型数据 */
-#define kZStrIsValid(str)        [ZCGlobal isValidString:str]                                                       /**< 返回布尔型，判断字符串是否有效 & 非空格 */
-#define kZArrIsValid(arr)        [ZCGlobal isValidArray:arr]                                                        /**< 返回布尔型，判断数组是否有效 & 有count */
-#define kZDicIsValid(dic)        [ZCGlobal isValidDictionary:dic]                                                   /**< 返回布尔型，判断字典是否有效 & 有count */
+#define kZStrIsValid(str)        [ZCGlobal isValidStr:str]                                                       /**< 返回布尔型，判断字符串是否有效 & 非空格 */
 #define kZUrlStr(str)            ((NSURL *)[NSURL URLWithString:kZStrNonnil(str)])                                  /**< 返回非nilRUL类型  */
 #define kZStrFormat(fmt, ...)    ((NSString *)[NSString stringWithFormat:fmt, ##__VA_ARGS__])                       /**< 返回格式化字符串 */
-#define kZArrExplicit(arr, ele)  ((NSArray *)([ZCGlobal isExplicitArray:arr elementClass:ele] ? arr : @[]))         /**< 若原arr为nil或非数组或元素类型不同，则返回@[] */
+#define kZArrExplicit(arr, ele)  ((NSArray *)([ZCGlobal isExplicitArr:arr elementClass:ele] ? arr : @[]))         /**< 若原arr为nil或非数组或元素类型不同，则返回@[] */
 
 
 /**< --- color --- */
@@ -88,7 +86,7 @@
 
 
 /**< --- 文件路径 --- */
-#define kZFilePath(bundle, fileName, extName) [ZCGlobal resourcePath:bundle name:fileName ext:extName]  /**< 文件路径 */
+#define kZFilePath(fileName, extName) [ZCGlobal resourcePath:fileName ext:extName]  /**< 文件路径 */
 
 
 /**< --- 打印日志 --- */

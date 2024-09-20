@@ -112,7 +112,7 @@
             }];
             UIAlertAction *cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel", nil) style:UIAlertActionStyleCancel handler:nil];
             [alert addAction:ac1]; [alert addAction:ac2]; [alert addAction:cancel];
-            UIViewController *fromVc = [ZCGlobal currentController];
+            UIViewController *fromVc = [ZCGlobal topController];
             if (fromVc) [fromVc presentViewController:alert animated:YES completion:nil];
         } else if (items.count == 1) {
             [self photoPicker:[sourceTypes[0] integerValue] edit:edit front:front finish:done];
@@ -135,7 +135,7 @@
 }
 
 + (void)pickerHandler:(UIImagePickerControllerSourceType)type edit:(BOOL)edit front:(BOOL)front finish:(void(^)(UIImage *image, NSString *fail))finish {
-    UIViewController *fromVc = [ZCGlobal currentController];
+    UIViewController *fromVc = [ZCGlobal topController];
     if (!fromVc) return;
     ZCSystemHandler *handle = [ZCSystemHandler sharedHandler];
     handle.pickerPhotoBlock = finish;
@@ -197,7 +197,7 @@
 }
 
 + (void)sendMessage:(NSString *)message receivers:(NSArray <NSString *>*)receivers finish:(void(^)(BOOL isSendSuccess, BOOL isCancelSend))finish {
-    UIViewController *fromVc = [ZCGlobal currentController];
+    UIViewController *fromVc = [ZCGlobal topController];
     if (message && receivers.count && fromVc) {
         if ([MFMessageComposeViewController canSendText]) {
             [ZCSystemHandler sharedHandler].messageResultBlock = finish;
@@ -216,7 +216,7 @@
 
 #pragma mark - System alert
 + (void)alertChoice:(NSString *)title message:(NSString *)message ctor:(NSString * _Nullable (^)(BOOL, BOOL * _Nonnull))ctor action:(void (^)(BOOL))doAction {
-    UIViewController *fromVc = [ZCGlobal currentController];
+    UIViewController *fromVc = [ZCGlobal topController];
     if (!fromVc) return;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     NSString *cancel = nil, *confirm = nil; BOOL destructive = NO;
@@ -252,7 +252,7 @@
 + (void)alertSheet:(NSString *)title message:(nullable NSString *)message
             cancel:(NSString * _Nullable (^)(void))cancel
               ctor:(NSString * _Nonnull (^)(NSInteger, BOOL * _Nonnull))ctor action:(void (^)(NSInteger))doAction {
-    UIViewController *fromVc = [ZCGlobal currentController];
+    UIViewController *fromVc = [ZCGlobal topController];
     if (!fromVc || !ctor || !doAction) return;
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleActionSheet];
     BOOL isBreak = NO; NSInteger index = 0; NSMutableArray *sheets = [NSMutableArray array];

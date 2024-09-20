@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ZCGlobal.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSDictionary (ZC)
+
+- (NSDictionary *)replaceForNewObject:(nullable id)newObject forKey:(NSString *)key; //返回新字典，注入nil、NSNull时候将移除原有的键
 
 - (nullable id)randomValue;  /**< 随机值 */
 
@@ -40,8 +41,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)jsonString;  /**< 返回json字符串，未做格式化处理 */
 
 #pragma mark - Parse
-- (nullable ZCJsonValue)jsonValueForKey:(NSString *)key;
-
 - (NSArray *)arrayValueForKey:(NSString *)key;
 
 - (NSDictionary *)dictionaryValueForKey:(NSString *)key;
@@ -90,11 +89,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)injectLongValue:(long)value forKey:(NSString *)key abnormalValue:(long)abnormalValue;
 
-- (void)injectValue:(nullable ZCJsonValue)value forKey:(NSString *)key;
-
-- (void)injectValue:(nullable ZCJsonValue)value forAutoKey:(NSString *)autoKey;
-
-- (void)injectValue:(nullable ZCJsonValue)value forKey:(NSString *)key allowNull:(BOOL)allowNull allowRemove:(BOOL)allowRemove;
+//TODO: 下面三个方法修改 & 公开
+//- (void)injectValue:(nullable ZCJsonValue)value forKey:(NSString *)key;
+//
+//- (void)injectValue:(nullable ZCJsonValue)value forAutoKey:(NSString *)autoKey;
+//
+//- (void)injectValue:(nullable ZCJsonValue)value forKey:(NSString *)key allowNull:(BOOL)allowNull allowRemove:(BOOL)allowRemove;
 
 @end
 

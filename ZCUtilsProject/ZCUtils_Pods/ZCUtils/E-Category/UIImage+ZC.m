@@ -23,7 +23,7 @@
 
 + (UIImage *)imageGIFAnimated:(NSString *)name {
     if (!name) return nil;
-    NSString *path = [ZCGlobal resourcePath:nil name:name ext:@"gif"];
+    NSString *path = [ZCGlobal resourcePath:name ext:@"gif"];
     if (!path) return [UIImage imageNamed:name];
     NSData *data = [NSData dataWithContentsOfFile:path];
     if (data) return [UIImage imageGIFAnimatedWithData:data];
@@ -31,7 +31,7 @@
 }
 
 + (UIImage *)imageWithClear {
-    return [ZCGlobal ZCImageName:@"zc_image_clear_color"];
+    return [ZCGlobal imageForName:@"zc_image_clear_color"];
 }
 
 + (UIImage *)imageWithColor:(UIColor *)color {

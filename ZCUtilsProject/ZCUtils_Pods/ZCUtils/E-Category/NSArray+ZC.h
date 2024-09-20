@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "ZCGlobal.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,8 +31,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)jsonString;  /**< 返回json字符串，未做格式化处理 */
 
 #pragma mark - Parse
-- (nullable ZCJsonValue)jsonValueForIndex:(NSInteger)index;
-
 - (NSArray *)arrayValueForIndex:(NSInteger)index;
 
 - (NSDictionary *)dictionaryValueForIndex:(NSInteger)index;
@@ -87,10 +84,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)injectLongValue:(long)value;  /**< 末尾添加数据 */
 
 - (void)injectFloatValue:(float)value;  /**< 末尾添加数据 */
-
-- (void)injectValue:(nullable ZCJsonValue)value;  /**< 末尾添加数据 */
-
-- (void)injectValue:(nullable ZCJsonValue)value forIndex:(NSUInteger)index;  /**< 插入数据 */
 
 @end
 

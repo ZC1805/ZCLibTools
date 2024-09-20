@@ -31,6 +31,17 @@
 }
 
 #pragma mark - Usually
+- (NSDictionary *)replaceForNewObject:(nullable id)newObject forKey:(NSString *)key {
+    NSMutableDictionary *newDic = [self mutableCopy];
+    if (key && [key isKindOfClass:NSString.class]) {
+        if (newObject == nil || newObject == NSNull.null) {
+            [newDic removeObjectForKey:key];
+        } else {
+            [newDic setObject:newObject forKey:key];
+        }
+    } return newDic.copy;
+}
+
 - (id)randomValue {
     return [self.allValues randomObject];
 }
@@ -189,17 +200,6 @@
     if (key != nil && [key isKindOfClass:NSString.class]) return NO;
     NSAssert(0, @"ZCKit: parse dic for key is fail");
     return YES;
-}
-
-/**< 错误时候默认返回 nil*/
-- (ZCJsonValue)jsonValueForKey:(NSString *)key {
-    if ([self keyIsInvalidKey:key]) return nil;
-    id obj = [self objectForKey:key];
-    if (![ZCGlobal isJsonValue:obj]) {
-        NSAssert(0, @"ZCKit: parse json value is not json value");
-        return nil;
-    }
-    return obj;
 }
 
 /**< 错误时候默认返回 @[] */
@@ -512,66 +512,69 @@
     }
 }
 
-/**< 当value为nil、@""、@"null"时不会注入字典 */
-- (void)injectValue:(ZCJsonValue)value forKey:(NSString *)key {
-    [self injectValue:value forKey:key allowNull:NO allowRemove:NO];
+//TODO: 下面三个方法修改 & 公开
+- (void)injectValue:(nullable id)value forKey:(NSString *)key {
 }
-
-/**< 当value为nil、@""、@"null"时不会注入字典且会移除之前的键值对 */
-- (void)injectValue:(ZCJsonValue)value forAutoKey:(NSString *)autoKey {
-    [self injectValue:value forKey:autoKey allowNull:NO allowRemove:YES];
-}
-
-/**< allowNull为YES时候，不规则的value值将替换成NSNull注入 */
-/**< allowNull为NO时候，allowRemove为NO，不规则的value值将不会注入也不会移除原有值 */
-/**< allowNull为NO时候，allowRemove为YES，不规则的value将按key移除之前的key-value */
-- (void)injectValue:(ZCJsonValue)value forKey:(NSString *)key allowNull:(BOOL)allowNull allowRemove:(BOOL)allowRemove {
-    if ([self keyIsInvalidKey:key value:value allowNull:allowNull allowRemove:allowRemove]) return;
-    if (allowNull && (value == nil || value == NULL)) {
-        [self setObject:[NSNull null] forKey:key]; return;
-    }
-    if ([value isKindOfClass:NSString.class]) {
-        if (allowNull) {
-            if ([value isEqualToString:@"<null>"] || [value isEqualToString:@"(null)"]) {
-                [self setObject:[NSNull null] forKey:key];
-            } else {
-                [self setObject:value forKey:key];
-            }
-        } else if ([value length] && ![value isEqualToString:@"<null>"] && ![value isEqualToString:@"(null)"]) {
-            [self setObject:value forKey:key];
-        } else {
-            if (allowRemove) {
-                [self removeObjectForKey:key];
-            } else {
-                if (ZCKitBridge.isPrintLog) kZLog(@"ZCKit: dic inject string obj is invalid");
-            }
-        }
-    } else {
-        [self setObject:value forKey:key];
-    }
-}
-
-- (BOOL)keyIsInvalidKey:(NSString *)key value:(id)value allowNull:(BOOL)allowNull allowRemove:(BOOL)allowRemove {
-    if (key == nil || ![key isKindOfClass:NSString.class]) {
-        NSAssert(0, @"ZCKit: dic inject key obj is invalid");
-        return YES;
-    }
-    if (![ZCGlobal isJsonValue:value]) {
-        NSAssert(0, @"ZCKit: dic inject value is not json value");
-        return YES;
-    }
-    if (allowNull) {
-        return NO;
-    }
-    if (value == nil || value == NULL) {
-        if (allowRemove) {
-            [self removeObjectForKey:key];
-        } else {
-            if (ZCKitBridge.isPrintLog) kZLog(@"ZCKit: dic inject value obj is nil");
-        }
-        return YES;
-    }
-    return NO;
-}
+///**< 当value为nil、@""、@"null"时不会注入字典 */
+//- (void)injectValue:(ZCJsonValue)value forKey:(NSString *)key {
+//    [self injectValue:value forKey:key allowNull:NO allowRemove:NO];
+//}
+//
+///**< 当value为nil、@""、@"null"时不会注入字典且会移除之前的键值对 */
+//- (void)injectValue:(ZCJsonValue)value forAutoKey:(NSString *)autoKey {
+//    [self injectValue:value forKey:autoKey allowNull:NO allowRemove:YES];
+//}
+//
+///**< allowNull为YES时候，不规则的value值将替换成NSNull注入 */
+///**< allowNull为NO时候，allowRemove为NO，不规则的value值将不会注入也不会移除原有值 */
+///**< allowNull为NO时候，allowRemove为YES，不规则的value将按key移除之前的key-value */
+//- (void)injectValue:(ZCJsonValue)value forKey:(NSString *)key allowNull:(BOOL)allowNull allowRemove:(BOOL)allowRemove {
+//    if ([self keyIsInvalidKey:key value:value allowNull:allowNull allowRemove:allowRemove]) return;
+//    if (allowNull && (value == nil || value == NULL)) {
+//        [self setObject:[NSNull null] forKey:key]; return;
+//    }
+//    if ([value isKindOfClass:NSString.class]) {
+//        if (allowNull) {
+//            if ([value isEqualToString:@"<null>"] || [value isEqualToString:@"(null)"]) {
+//                [self setObject:[NSNull null] forKey:key];
+//            } else {
+//                [self setObject:value forKey:key];
+//            }
+//        } else if ([value length] && ![value isEqualToString:@"<null>"] && ![value isEqualToString:@"(null)"]) {
+//            [self setObject:value forKey:key];
+//        } else {
+//            if (allowRemove) {
+//                [self removeObjectForKey:key];
+//            } else {
+//                if (ZCKitBridge.isPrintLog) kZLog(@"ZCKit: dic inject string obj is invalid");
+//            }
+//        }
+//    } else {
+//        [self setObject:value forKey:key];
+//    }
+//}
+//
+//- (BOOL)keyIsInvalidKey:(NSString *)key value:(id)value allowNull:(BOOL)allowNull allowRemove:(BOOL)allowRemove {
+//    if (key == nil || ![key isKindOfClass:NSString.class]) {
+//        NSAssert(0, @"ZCKit: dic inject key obj is invalid");
+//        return YES;
+//    }
+//    if (![ZCGlobal isJsonValue:value]) {
+//        NSAssert(0, @"ZCKit: dic inject value is not json value");
+//        return YES;
+//    }
+//    if (allowNull) {
+//        return NO;
+//    }
+//    if (value == nil || value == NULL) {
+//        if (allowRemove) {
+//            [self removeObjectForKey:key];
+//        } else {
+//            if (ZCKitBridge.isPrintLog) kZLog(@"ZCKit: dic inject value obj is nil");
+//        }
+//        return YES;
+//    }
+//    return NO;
+//}
 
 @end
