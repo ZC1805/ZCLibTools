@@ -7,9 +7,8 @@
 //
 
 #import "UIImage+ZC.h"
-#import "ZCPredefine.h"
+#import "ZCGlobal.h"
 #import "ZCKitBridge.h"
-#import "ZCMacro.h"
 #import <ImageIO/ImageIO.h>
 #import <CoreText/CoreText.h>
 #import <Accelerate/Accelerate.h>

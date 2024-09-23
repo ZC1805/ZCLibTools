@@ -98,3 +98,147 @@
 
 
 #endif /* ZCMacro_h */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
+//  ZCConstant.h
+//  Pods
+//
+//  Created by zjy on 2023/10/27.
+//
+
+#ifndef ZCConstant_h
+#define ZCConstant_h
+
+
+#import "ZCProxy.h"
+#import "TYGlobalTool.h"
+#import <PPLanguageExtensions/UIColor+PPHex.h>
+
+
+#define ZC_Wid                      (UIScreen.mainScreen.bounds.size.width)
+#define ZC_Hei                      (UIScreen.mainScreen.bounds.size.height)
+#define ZC_1Px                      (1.0 / MAX(1.0, UIScreen.mainScreen.scale))
+#define ZC_Am                       [TYGlobalTool minScreenPoints]
+#define ZC_Dp(x)                    (ZC_Wid * (x) / 375.0)
+#define ZC_AdJustH(x)               (ZC_Hei * (x) / 667.0)
+#define ZC_SmallScreen              (ZC_Hei <= 667)
+#define ZC_Ar(x)                    [TYGlobalTool roundScreenPointsForUIPoints:x]
+#define ZC_StuBarHei                (TYGlobalTool.sharedInstance.obtainStatusBarHei)
+#define ZC_NaviBarHei               (56.0)
+#define ZC_NaviHei                  (ZC_StuBarHei + ZC_NaviBarHei)
+#define ZC_SafeHei                  (ZC_IPhoneX ? 34.0 : 20.0)
+#define ZC_SysTabBarHei             (ZC_IPhoneX ? 83.0 : 49.0)
+#define ZC_CusTabBarHei             (ZCProxy.imp.tabBarHei)
+#define ZC_App_Normal_Margin        16 //视图边距
+#define ZC_LineHeight               (1.0/[UIScreen mainScreen].scale)
+
+#define ZC_Color(x)                 [UIColor colorBuildFromHexStr:x]
+#define ZC_ColorA(x, a)             [UIColor colorBuildFromColor:ZC_Color(x) alpha:a]
+#define ZC_UrlStr(x)                [NSURL URLWithString:ZC_StrNonnil(x)]
+#define ZC_Image(x)                 [TYGlobalTool imageForName:x]
+
+
+#define ZC_FuncLimit(a, max, min)   (MIN(max, MAX(min, a)))
+#define ZC_KeyWindow                UIApplication.sharedApplication.delegate.window
+#define ZC_IPhoneX                  ((ZC_Hei / ZC_Wid > 2.0) ? YES : NO)
+#define ZC_DicNonnil(dic)           ((dic && [dic isKindOfClass:NSDictionary.class]) ? dic : @{})
+#define ZC_ArrNonnil(arr)           ((arr && [arr isKindOfClass:NSArray.class]) ? arr : @[])
+#define ZC_StrNonnil(str)           ((str && [str isKindOfClass:NSString.class] && ![str isEqualToString:@"<null>"] \
+                                    && ![str isEqualToString:@"(null)"]) ? str : @"")
+#define ZC_StrFormat(format, ...)   [NSString stringWithFormat:format, ##__VA_ARGS__]
+#define ZC_AmountStr(fen)           ZC_StrFormat(@"₦%@", [NSString amount:fen comma:YES money:YES])
+#define ZC_AmountIntStr(fen)        [ZC_AmountStr(fen) stringByReplacingOccurrencesOfString:@".00" withString:@""]
+#define ZC_DateStr(date, fmt)       [NSString getDateStrWithTimeStamp:date withFormat:fmt]
+
+
+#define ZC_FontPPB(s375)            [UIFont fontWithName:@"PalmPayNum-Bold" size:ZC_Dp(s375)]
+#define ZC_FontR(s375)              [UIFont fontWithName:@"Roboto-Regular" size:ZC_Dp(s375)]
+#define ZC_FontM(s375)              [UIFont fontWithName:@"Roboto-Medium" size:ZC_Dp(s375)]
+#define ZC_FontB(s375)              [UIFont fontWithName:@"Roboto-Bold" size:ZC_Dp(s375)]
+
+
+#define ZC_FontPP_Bold(s)           [UIFont fontWithName:@"PalmPayNum-Bold" size:s]
+#define ZC_FontRoto_Regular(s)      [UIFont fontWithName:@"Roboto-Regular" size:s]
+#define ZC_Font_Rototo_Medium(s)    [UIFont fontWithName:@"Roboto-Medium" size:s]
+#define ZC_FontRoto_Bold(s)         [UIFont fontWithName:@"Roboto-Bold" size:s]
+
+
+#define ZC_MainColor                [UIColor colorWithHexString:@"#6A35FF"]
+#define ZC_SubColor                 [UIColor colorWithHexString:@"#F0ECFC"]
+#define ZC_TitleColor               [UIColor colorWithHexString:@"#202046"]
+#define ZC_SubTitleColor            [UIColor colorWithHexString:@"#6F7B85"]
+#define ZC_AssistColor              [UIColor colorWithHexString:@"#9CA2AA"]
+#define ZC_PrimaryColor             [UIColor colorWithHexString:@"#E7DEFF"]
+#define ZC_KLineColor               [UIColor colorWithHexString:@"#ECECEC"]
+
+
+#define ZC_UseUISDark(obj, isDark)  if (@available(iOS 13.0, *)) { obj.overrideUserInterfaceStyle = \
+                                    (isDark ? UIUserInterfaceStyleDark : UIUserInterfaceStyleLight); } else { (void)obj; }
+
+
+#define ZC_Dyc(lightColorHexStr)    [ZCProxy.imp dynamicLight:lightColorHexStr dark:nil]
+#define ZC_Dyca(lightObject, aph)   [ZCProxy.imp dynamicLight:lightObject alpha:aph]
+#define ZC_Dycld(lHexStr, dHexStr)  [ZCProxy.imp dynamicLight:lHexStr dark:dHexStr]
+#define ZC_Dyclda(lc, dc, aph)      [ZCProxy.imp dynamicColor:lc darkColor:dc alpha:aph]
+#define ZC_Dycmapa(lStr, isDk, aph) [ZCProxy.imp dynamicMap:lStr isDark:isDk alpha:aph]
+#define ZC_Dyc_Same(cHexStr)        [UIColor colorBuildFromHexStr:cHexStr isSame:YES]
+#define ZC_Dyca_Same(cHexStr, aph)  [UIColor colorBuildFromColor:ZC_Dyc_Same(cHexStr) alpha:aph]
+
+
+#define _sfmt(...)                  [NSString stringWithFormat:__VA_ARGS__]
+#define is_iPhoneX                  (ZC_Hei / ZC_Wid > 2.0 ? YES : NO)
+#define is_smallScreen              (ZC_Hei <= 676)
+#define kBottomSafeAreaHeight       (is_iPhoneX ? 34: 0) //安全区域高度
+
+#define Weakify(x)                  typeof(x) __weak weak##x = x //建议用后面这两个
+#define Strongfiy(x)                typeof(x) __strong x = weak##x
+
+#endif /* ZCConstant_h */
+
+
+
+
+
+
+
+#define GA_RAIN_RANDOM(range) (arc4random() % (range)) / 100.0
+#define GA_File(path) [NSURL fileURLWithPath:ZC_StrNonnil(path)]
+
+#define GA_Ar(x)                    [TYGlobalTool roundScreenPointsForAndroidUIPoints:x]
+#define GA_Ac(x)                    [TYGlobalTool ceilScreenPointsForAndroidUIPoints:x]
+#define GA_Dp(x)                    (ZC_Wid * (x) / 360.0)
+#define GA_Edge                     GA_Dp(16)
+#define GA_Ival                     GA_Dp(12)
+
+#define GA_FontPPB(s360)            [UIFont fontWithName:@"PalmPayNum-Bold" size:GA_Dp(s360)]
+#define GA_FontR(s360)              [UIFont fontWithName:@"Roboto-Regular" size:GA_Dp(s360)]
+#define GA_FontM(s360)              [UIFont fontWithName:@"Roboto-Medium" size:GA_Dp(s360)]
+#define GA_FontB(s360)              [UIFont fontWithName:@"Roboto-Bold" size:GA_Dp(s360)]
+#define GA_FontH(s360)              [UIFont fontWithName:@"Roboto-Black" size:GA_Dp(s360)]
+
+
+
+
+//字体回调给上层
+
