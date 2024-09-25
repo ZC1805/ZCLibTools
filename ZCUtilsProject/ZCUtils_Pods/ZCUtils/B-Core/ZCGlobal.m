@@ -162,6 +162,7 @@
     UIImage *image = [UIImage imageNamed:name];
     if (!image) {
         for (id <ZCProxyComponentProtocol>comp in ZCProxy.comps) {
+            //TODO: 优先从当前Bundle中拿
             NSBundle *bundle = comp.compResourceBundle;
             if (bundle) {
                 image = [UIImage imageNamed:name inBundle:bundle compatibleWithTraitCollection:nil];
@@ -177,6 +178,7 @@
     NSString *link = [self resource:mBundle name:name ext:ext];
     if (!link.length) {
         for (id <ZCProxyComponentProtocol>comp in ZCProxy.comps) {
+            //TODO: 优先从当前Bundle中拿
             NSBundle *cBundle = comp.compResourceBundle;
             if (cBundle) {
                 link = [self resource:cBundle name:name ext:ext];
